@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    restart: always
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:${APP_PORT}"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./.env
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    volumes:
+      - .:/app
+      - media_vol:/app/media
+  db:
+    image: postgres:15.2-alpine3.17
+    restart: always
+    env_file:
+      - ./.env
+    healthcheck:
+      test: [ "CMD", "sh", "-c", "psql -lqt --username=$SQL_USER | cut -d \\| -f 1 | grep -qw $SQL_DB" ]
+      interval: 1s
+      timeout: 2s
+      retries: 10
+      start_period: 1s
+    environment:
+      - POSTGRES_DB=${SQL_DB}
+      - POSTGRES_USER=${SQL_USER}
+      - POSTGRES_PASSWORD=${SQL_PASSWORD}
+    volumes:
+      - db_vol:/var/lib/postgresql/data
+
+volumes:
+  media_vol:
+  db_vol:
