@@ -16,4 +16,4 @@ class LoginView(View):
         if user:
             return redirect(reverse('pages:home'))
         else:
-            return render(request, 'users/login.html', {'message': 'Invalid credentials'})
+            return render(request, 'users/login.html', {'credentials': 'Invalid credentials'})
