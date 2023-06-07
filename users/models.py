@@ -18,5 +18,5 @@ class User(AbstractUser):
         MANAGER = 'manager', _('Manager')
 
     user_type = models.CharField(max_length=7, choices=UserType.choices, default=UserType.USER)
-    
+
     objects = UserManager()
