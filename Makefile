@@ -17,17 +17,17 @@ lint:
 	@pycodestyle --max-line-length=120 --exclude=venv,"**/migrations/*.py" .
 
 up:
-	@docker compose --env-file .env.dev up --build -d
+	@docker compose up --build -d
 
 down:
-	@docker compose --env-file .env.dev down
+	@docker compose down
 
 restart:
-	@docker compose --env-file .env.dev down
-	@docker compose --env-file .env.dev up --build -d
+	@docker compose down
+	@docker compose up --build -d
 
 refresh-database:
-	@docker compose --env-file .env.dev down --volumes
+	@docker compose down --volumes
 
 create-superuser:
-	@docker compose --env-file .env.dev exec web python manage.py createsuperuser
+	@docker compose exec web python manage.py createsuperuser
