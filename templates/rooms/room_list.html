@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} | Room List{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5 mb-5">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header custom-card-header-bg">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="card-title">Rooms</h4>
+                    {% if request.user.user_type != 'user' %}
+                        <a href="{% url 'rooms:request_create' %}" class="btn btn-primary float-right">Create New Request</a>
+                    {% endif %}
+                </div>              
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Capacity</th>
+                            {% if request.user.user_type != 'user' %}<th>Actions</th>{% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for room in rooms %}
+                        <tr>
+                            <td>{{ room.code }}</td>
+                            <td>{{ room.capacity }}</td>
+                            {% if request.user.user_type != 'user' %}
+                                <td>
+                                    <a href="#" class="btn btn-primary">Reservations</a>
+                                    <form method="POST" action="#" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
