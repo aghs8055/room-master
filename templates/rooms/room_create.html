@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} | Create Room{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="container mb-3">
+            <div class="row justify-content-center">
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header">Singup</div>
+                        <div class="card-body">
+                            <form id="room-create-form" method="post" action="{% url 'rooms:request_create' %}">
+                                {% csrf_token %}
+                                <div class="mb-2">
+                                    <label for="code">Code (Name)</label>
+                                    <input type="text" name="code" class="form-control mt-2 {% if errors.code %}is-invalid{% endif %}"
+                                           id="id_code">
+                                    <small class="text-muted text-sm">Code or name must be unique.</small>
+                                    <span class="invalid-feedback">{{ errors.code }}</span>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="id_capacity">Capacity</label>
+                                    <input type="number" name="capacity" class="form-control mt-2 {% if errors.capacity %}is-invalid{% endif %}"
+                                           id="id_capacity">
+                                    <span class="invalid-feedback">{{ errors.capacity }}</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary btn-lg">Create</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
