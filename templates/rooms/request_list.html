@@ -31,7 +31,7 @@
                             {% if request.user.user_type != "user" %}<td>{{ room_request.user.username }}</td>{% endif %}
                             <td>{{ room_request.status|title }}</td>
                             <td>{{ room_request.date|default:'-' }}</td>
-                            <td>{{ room_request.Duration|default:'-' }}</td>
+                            <td>{{ room_request.duration|default:'-' }}</td>
                             <td>{{ room_request.start_time|default:'-' }}</td>
                             <td>{{ room_request.end_time|default:'-' }}</td>
                             <td>
