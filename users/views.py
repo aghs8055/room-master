@@ -5,9 +5,10 @@ from django.shortcuts import redirect
 from django.urls import reverse
 
 from users.forms import SignupForm
+from users.mixins import LoggedInUserForbiddenMixin
 
 
-class LoginView(View):
+class LoginView(LoggedInUserForbiddenMixin, View):
     def get(self, request):
         return render(request, 'users/login.html')
 
@@ -22,7 +23,7 @@ class LoginView(View):
             return render(request, 'users/login.html', {'credentials': 'Invalid credentials'})
         
 
-class SignupView(View):
+class SignupView(LoggedInUserForbiddenMixin, View):
     def get(self, request):
         return render(request, 'users/signup.html')
     
