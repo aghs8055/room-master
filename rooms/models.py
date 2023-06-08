@@ -30,3 +30,4 @@ class Request(models.Model):
     start_time = models.TimeField(null=True)
     end_time = models.TimeField(null=True)
     date = models.DateField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
