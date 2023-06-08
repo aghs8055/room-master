@@ -18,9 +18,14 @@ class LoginView(LoggedInUserForbiddenMixin, View):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return redirect(reverse('pages:home'))
+            return redirect(self.get_redirect_url())
         else:
             return render(request, 'users/login.html', {'credentials': 'Invalid credentials'})
+        
+    def get_redirect_url(self):
+        if self.request.GET.get('next'):
+            return self.request.GET.get('next')
+        return reverse('pages:home')
         
 
 class SignupView(LoggedInUserForbiddenMixin, View):

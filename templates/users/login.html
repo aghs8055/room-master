@@ -11,7 +11,7 @@
                     <div class="card">
                         <div class="card-header">Login</div>
                         <div class="card-body">
-                            <form id="login-form" method="post" action="{% url 'users:login' %}">
+                            <form id="login-form" method="post" action="{% url 'users:login' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">
                                 {% csrf_token %}
                                 <div class="mb-2">
                                     <label for="id_username">Username</label>
