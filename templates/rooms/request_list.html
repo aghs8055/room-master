@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} | Room Requests{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5 mb-5">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header custom-card-header-bg">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="card-title">Room Requests</h4>
+                    <a href="#" class="btn btn-primary float-right">Create New Request</a>
+                </div>              
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            {% if request.user.user_type != "user" %}<th>Username</th>{% endif %}
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Duration</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for room_request in room_requests %}
+                        <tr>
+                            {% if request.user.user_type != "user" %}<td>{{ room_request.user.username }}</td>{% endif %}
+                            <td>{{ room_request.status|title }}</td>
+                            <td>{{ room_request.date|default:'-' }}</td>
+                            <td>{{ room_request.Duration|default:'-' }}</td>
+                            <td>{{ room_request.start_time|default:'-' }}</td>
+                            <td>{{ room_request.end_time|default:'-' }}</td>
+                            <td>
+                                {% if room_request.reservation %}<a href="#" class="btn btn-primary">Reservation Detail</a>{% endif %}
+                                <form method="POST" action="#" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
