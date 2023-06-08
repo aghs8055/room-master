@@ -30,8 +30,8 @@
                             <td>{{ room.capacity }}</td>
                             {% if request.user.user_type != 'user' %}
                                 <td>
-                                    <a href="#" class="btn btn-primary">Reservations</a>
-                                    <form method="POST" action="#" style="display: inline;">
+                                    <a href="/" class="btn btn-primary">Reservations</a>
+                                    <form method="POST" action="{% url 'rooms:room_delete' room.id %}" style="display: inline;">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>
