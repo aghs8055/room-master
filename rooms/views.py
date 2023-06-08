@@ -20,7 +20,7 @@ class RequestListView(LoginRequiredMixin, View):
         
 class RequestCreateView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'rooms/request_create.html')
+        return render(request, 'rooms/request_form.html')
     
     def post(self, request):
         form = RequestForm(request.POST)
@@ -28,7 +28,7 @@ class RequestCreateView(LoginRequiredMixin, View):
             form.save(user=request.user)
             return redirect(reverse('rooms:request_list'))
         print(dict(form.errors))
-        return render(request, 'rooms/request_create.html', {'errors': dict(form.errors)})
+        return render(request, 'rooms/request_form.html', {'errors': dict(form.errors)})
     
 
 class RequestDeleteView(AdminOrManagerAccessMixin, View):
@@ -49,14 +49,14 @@ class RoomListView(LoginRequiredMixin, View):
 
 class RoomCreateView(AdminOrManagerAccessMixin, View):
     def get(self, request):
-        return render(request, 'rooms/room_create.html')
+        return render(request, 'rooms/room_form.html')
     
     def post(self, request):
         form = RoomForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect(reverse('rooms:room_list'))
-        return render(request, 'rooms/room_create.html', {'errors': dict(form.errors)})
+        return render(request, 'rooms/room_form.html', {'errors': dict(form.errors)})
     
 
 class RoomDeleteView(AdminOrManagerAccessMixin, View):
@@ -65,5 +65,25 @@ class RoomDeleteView(AdminOrManagerAccessMixin, View):
         if room:
             room.delete()
             return redirect(reverse('rooms:room_list'))
+        else:
+            return redirect(reverse('pages:not_found'))
+        
+
+class RoomEditView(AdminOrManagerAccessMixin, View):
+    def get(self, request, room_id):
+        room = Room.objects.filter(id=room_id)
+        if room:
+            return render(request, 'rooms/room_form.html', {'room': room[0]})
+        else:
+            return redirect(reverse('pages:not_found'))
+        
+    def post(self, request, room_id):
+        room = Room.objects.filter(id=room_id)
+        if room:
+            form = RoomForm(request.POST, instance=room[0])
+            if form.is_valid():
+                form.save()
+                return redirect(reverse('rooms:room_list'))
+            return render(request, 'rooms/room_form.html', {'errors': dict(form.errors)})
         else:
             return redirect(reverse('pages:not_found'))

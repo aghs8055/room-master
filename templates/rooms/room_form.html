@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ block.super }} | Create Room{% endblock %}
+{% block title %}{{ block.super }} | 
+
+{% if room %}
+    Create Room
+{% else %}
+    Edit Room
+{% endif %}
+
+{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center mt-5">
@@ -9,25 +17,37 @@
             <div class="row justify-content-center">
                 <div class="col-md-9">
                     <div class="card">
-                        <div class="card-header">Room Creation</div>
+                        {% if room %}
+                            <div class="card-header">Room Edition</div>
+                        {% else %}
+                            <div class="card-header">Room Creation</div>
+                        {% endif %}
                         <div class="card-body">
-                            <form id="room-create-form" method="post" action="{% url 'rooms:room_create' %}">
+                            {% if room %}
+                                <form id="room-edit-form" method="post" action="{% url 'rooms:room_edit' room.id %}">
+                            {% else %}
+                                <form id="room-create-form" method="post" action="{% url 'rooms:room_create' %}">
+                            {% endif %}
                                 {% csrf_token %}
                                 <div class="mb-2">
                                     <label for="code">Code (Name)</label>
                                     <input type="text" name="code" class="form-control mt-2 {% if errors.code %}is-invalid{% endif %}"
-                                           id="id_code">
+                                           id="id_code" value="{{ room.code }}" required>
                                     <small class="text-muted text-sm">Code or name must be unique.</small>
                                     <span class="invalid-feedback">{{ errors.code }}</span>
                                 </div>
                                 <div class="mb-4">
                                     <label for="id_capacity">Capacity</label>
                                     <input type="number" name="capacity" class="form-control mt-2 {% if errors.capacity %}is-invalid{% endif %}"
-                                           id="id_capacity">
+                                           id="id_capacity" value="{{ room.capacity }}" required>
                                     <span class="invalid-feedback">{{ errors.capacity }}</span>
                                 </div>
                                 <div class="d-grid gap-2">
-                                    <button type="submit" class="btn btn-primary btn-lg">Create</button>
+                                    {% if room %}
+                                        <button type="submit" class="btn btn-primary btn-lg">Edit</button>
+                                    {% else %}
+                                        <button type="submit" class="btn btn-primary btn-lg">Create</button>
+                                    {% endif %}
                                 </div>
                             </form>
                         </div>
