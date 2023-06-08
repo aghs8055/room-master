@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.views import View
 
 from rooms.models import Request, Room
-from rooms.forms import RequestForm
+from rooms.forms import RequestForm, RoomForm
 from users.models import User
 
 
@@ -43,3 +43,16 @@ class RoomListView(View):
     def get(self, request):
         rooms = Room.objects.all()
         return render(request, 'rooms/room_list.html', {'rooms': rooms})
+    
+
+class RoomCreateView(View):
+    def get(self, request):
+        return render(request, 'rooms/room_create.html')
+    
+    def post(self, request):
+        form = RoomForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('rooms:room_list'))
+        return render(request, 'rooms/room_create.html', {'errors': dict(form.errors)})
+    
