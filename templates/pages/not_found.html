@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} | Not Found{% endblock %}
+
+{% block content %}
+    <h1>Not Found</h1>
+    <p>It seems you are looking for something that does not exist.</p>
+    <a href="{% url 'pages:home' %}" class="btn btn-primary">Return to homepage</a>
+{% endblock %}
+```
