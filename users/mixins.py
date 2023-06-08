@@ -16,7 +16,7 @@ class AdminOrManagerAccessMixin:
                 return redirect(reverse(self.redirect_url))
         else:
             return redirect(reverse(self.login_url))
-        
+
 
 class LoggedInUserForbiddenMixin:
     redirect_url = 'pages:home'
