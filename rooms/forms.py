@@ -25,7 +25,7 @@ class RequestForm(forms.ModelForm):
         room_request.user = user
         room_request.save()
         return room_request
-    
+
     def clean(self):
         errors = {}
 
@@ -37,9 +37,8 @@ class RequestForm(forms.ModelForm):
                 errors['start_time'] = 'Start time is required.'
             if not self.cleaned_data['end_time']:
                 errors['end_time'] = 'End time is required.'
-        
+
         if errors:
             raise forms.ValidationError(errors)
-        
+
         super().clean()
-                
