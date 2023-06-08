@@ -6,7 +6,7 @@ from users.models import User
 
 class Room(models.Model):
     capacity = models.PositiveIntegerField(blank=False, null=False)
-    code = models.CharField(max_length=20, blank=False, null=False)
+    code = models.CharField(max_length=20, blank=False, null=False, unique=True)
 
 
 class Reservation(models.Model):
