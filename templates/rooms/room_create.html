@@ -9,9 +9,9 @@
             <div class="row justify-content-center">
                 <div class="col-md-9">
                     <div class="card">
-                        <div class="card-header">Singup</div>
+                        <div class="card-header">Room Creation</div>
                         <div class="card-body">
-                            <form id="room-create-form" method="post" action="{% url 'rooms:request_create' %}">
+                            <form id="room-create-form" method="post" action="{% url 'rooms:room_create' %}">
                                 {% csrf_token %}
                                 <div class="mb-2">
                                     <label for="code">Code (Name)</label>
