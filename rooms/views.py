@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views import View
 
 from rooms.models import Request
+from rooms.forms import RequestForm
 from users.models import User
 
 
@@ -14,3 +16,14 @@ class RequestListView(View):
             room_requests = Request.objects.all().order_by('-created_at')
             return render(request, 'rooms/request_list.html', {'room_requests': room_requests})
         
+class RequestCreateView(View):
+    def get(self, request):
+        return render(request, 'rooms/request_create.html')
+    
+    def post(self, request):
+        form = RequestForm(request.POST)
+        if form.is_valid():
+            form.save(user=request.user)
+            return redirect(reverse('rooms:request_list'))
+        print(dict(form.errors))
+        return render(request, 'rooms/request_create.html', {'errors': dict(form.errors)})
