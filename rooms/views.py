@@ -62,7 +62,7 @@ class RequestEditView(LoginRequiredMixin, View):
         if room_request:
             form = RequestForm(request.POST, instance=room_request[0])
             if form.is_valid():
-                form.save()
+                form.save(user=request.user)
                 return redirect(reverse('rooms:request_list'))
             return render(request, 'rooms/request_form.html', {'errors': dict(form.errors)})
         else:
@@ -71,7 +71,7 @@ class RequestEditView(LoginRequiredMixin, View):
 
 class RoomListView(LoginRequiredMixin, View):
     def get(self, request):
-        rooms = Room.objects.all()
+        rooms = Room.objects.all().order_by('code')
         return render(request, 'rooms/room_list.html', {'rooms': rooms})
     
 
