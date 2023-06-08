@@ -56,3 +56,12 @@ class RoomCreateView(View):
             return redirect(reverse('rooms:room_list'))
         return render(request, 'rooms/room_create.html', {'errors': dict(form.errors)})
     
+
+class RoomDeleteView(View):
+    def post(self, request, room_id):
+        room = Room.objects.filter(id=room_id)
+        if room:
+            room.delete()
+            return redirect(reverse('rooms:room_list'))
+        else:
+            return redirect(reverse('pages:not_found'))
