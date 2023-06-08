@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.urls import reverse
 
@@ -36,3 +36,10 @@ class SignupView(LoggedInUserForbiddenMixin, View):
             print(request.POST)
             print(dict(user_form.errors))
             return render(request, 'users/signup.html', {'errors': dict(user_form.errors)})
+        
+
+class LogoutView(View):
+    def post(self, request):
+        if request.user.is_authenticated:
+            logout(request)
+        return redirect(reverse('pages:home'))
