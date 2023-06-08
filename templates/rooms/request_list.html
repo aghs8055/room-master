@@ -37,6 +37,7 @@
                             <td>
                                 {% if room_request.reservation %}<a href="#" class="btn btn-primary">Reservation Detail</a>{% endif %}
                                 {% if request.user == room_request.user %}
+                                    <a href="{% url 'rooms:request_edit' room_request.id %}" class="btn btn-warning">Edit</a>
                                     <form method="POST" action="{% url 'rooms:request_delete' room_request.id %}" style="display: inline;">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-danger">Delete</button>
