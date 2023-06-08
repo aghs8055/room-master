@@ -27,10 +27,22 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'rooms:request_list' %}">
-                        Room Requests
+                    <a class="nav-link" href="{% url 'rooms:room_list' %}">
+                        Rooms
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'rooms:request_list' %}">
+                        Requests
+                    </a>
+                </li>
+                {% if request.user.user_type != 'user' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        Reservations
+                    </a>
+                </li>
+                {% endif %}
             </ul>
             <ul class="navbar-nav ms-auto">
                 {% if not request.user.is_authenticated %}
