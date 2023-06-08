@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ block.super }} | Create Request{% endblock %}
+{% block title %}{{ block.super }} | 
+
+{% if room_request %}
+Edit Request
+{% else %}
+Create Request
+{% endif %}
+
+{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center mt-5">
@@ -9,38 +17,50 @@
             <div class="row justify-content-center">
                 <div class="col-md-9">
                     <div class="card">
+                        {% if room_request %}
+                        <div class="card-header">Request Edition</div>
+                        {% else %}
                         <div class="card-header">Request Creation</div>
+                        {% endif %}
                         <div class="card-body">
+                            {% if room_request %}
+                            <form id="request-create-form" method="post" action="{% url 'rooms:request_edit' room_request.id %}">
+                            {% else %}
                             <form id="request-create-form" method="post" action="{% url 'rooms:request_create' %}">
+                            {% endif %}
                                 {% csrf_token %}
                                 <div class="mb-2">
                                     <label for="id_date">Date</label>
                                     <input type="date" name="date" class="form-control mt-2 {% if errors.date %}is-invalid{% endif %}"
-                                           id="id_date">
+                                           id="id_date" value="{{ room_request.date }}">
                                     <small class="text-muted text-sm">If not specified, the date will be set by manager.</small>
                                     <span class="invalid-feedback">{{ errors.date }}</span>
                                 </div>
                                 <div class="mb-4">
                                     <label for="id_duration">Duration (Minutes)</label>
                                     <input type="number" name="duration" class="form-control mt-2 {% if errors.duration %}is-invalid{% endif %}"
-                                           id="id_duration">
+                                           id="id_duration" value="{{ room_request.duration }}">
                                     <small class="text-muted text-sm">If specified, the start and end time will be disregarded; otherwise, both the start and end time are required.</small>
                                     <span class="invalid-feedback">{{ errors.duration }}</span>
                                 </div>
                                 <div class="mb-4">
                                     <label for="id_start_time">Start Time</label>
                                     <input type="time" name="start_time" class="form-control mt-2 {% if errors.start_time %}is-invalid{% endif %}"
-                                           id="id_start_time">
+                                           id="id_start_time" value="{{ room_request.start_time }}">
                                     <span class="invalid-feedback">{{ errors.start_time }}</span>
                                 </div>
                                 <div class="mb-4">
                                     <label for="id_end_time">End Time</label>
                                     <input type="time" name="end_time" class="form-control mt-2 {% if errors.end_time %}is-invalid{% endif %}"
-                                           id="id_end_time">
+                                           id="id_end_time" value="{{ room_request.end_tiem }}">
                                     <span class="invalid-feedback">{{ errors.end_time }}</span>
                                 </div>
                                 <div class="d-grid gap-2">
+                                    {% if room_request %}
+                                    <button type="submit" class="btn btn-primary btn-lg">Edit</button>
+                                    {% else %}
                                     <button type="submit" class="btn btn-primary btn-lg">Create</button>
+                                    {% endif %}
                                 </div>
                             </form>
                         </div>
