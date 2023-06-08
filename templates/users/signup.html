@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} | Signup{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="container mb-3">
+            <div class="row justify-content-center">
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header">Singup</div>
+                        <div class="card-body">
+                            <form id="login-form" method="post" action="{% url 'users:signup' %}">
+                                {% csrf_token %}
+                                <div class="mb-2">
+                                    <label for="id_username">Username</label>
+                                    <input type="text" name="username" class="form-control mt-2 {% if errors.username %}is-invalid{% endif %}"
+                                           id="id_username" required>
+                                    <span class="invalid-feedback">{{ errors.username }}</span>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="id_password1">Password</label>
+                                    <input type="password" name="password1" class="form-control mt-2 {% if errors.password1 %}is-invalid{% endif %}"
+                                           id="id_password1" required>
+                                    <span class="invalid-feedback">{{ errors.password1 }}</span>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="id_password2">Confirm Password</label>
+                                    <input type="password" name="password2" class="form-control mt-2 {% if errors.password2 %}is-invalid{% endif %}"
+                                           id="id_password2" required>
+                                    <span class="invalid-feedback">{{ errors.password2 }}</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
