@@ -1,7 +1,13 @@
 from typing import Any, Dict
 from django import forms
 
-from rooms.models import Request
+from rooms.models import Request, Room
+
+
+class RoomForm(forms.ModelForm):
+    class Meta:
+        model = Room
+        fields = ['code', 'capacity']
 
 
 class RequestForm(forms.ModelForm):

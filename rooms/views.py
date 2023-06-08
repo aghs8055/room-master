@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 
-from rooms.models import Request
+from rooms.models import Request, Room
 from rooms.forms import RequestForm
 from users.models import User
 
@@ -37,3 +37,9 @@ class RequestDeleteView(View):
             return redirect(reverse('rooms:request_list'))
         else:
             return redirect(reverse('pages:not_found'))
+        
+
+class RoomListView(View):
+    def get(self, request):
+        rooms = Room.objects.all()
+        return render(request, 'rooms/room_list.html', {'rooms': rooms})
