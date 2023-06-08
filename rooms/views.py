@@ -10,8 +10,6 @@ from users.mixins import AdminOrManagerAccessMixin
 
 
 class RequestListView(LoginRequiredMixin, View):
-    login_url = 'users:login'
-
     def get(self, request):
         if request.user.user_type == User.UserType.USER:
             room_requests = Request.objects.filter(user=request.user).order_by('-created_at')
@@ -21,8 +19,6 @@ class RequestListView(LoginRequiredMixin, View):
             return render(request, 'rooms/request_list.html', {'room_requests': room_requests})
         
 class RequestCreateView(LoginRequiredMixin, View):
-    login_url = 'users:login'
-
     def get(self, request):
         return render(request, 'rooms/request_create.html')
     
@@ -46,8 +42,6 @@ class RequestDeleteView(AdminOrManagerAccessMixin, View):
         
 
 class RoomListView(LoginRequiredMixin, View):
-    login_url = 'users:login'
-
     def get(self, request):
         rooms = Room.objects.all()
         return render(request, 'rooms/room_list.html', {'rooms': rooms})
