@@ -29,3 +29,4 @@ class Request(models.Model):
     duration = models.IntegerField(null=True)
     start_time = models.TimeField(null=True)
     end_time = models.TimeField(null=True)
+    date = models.DateField(null=True)
