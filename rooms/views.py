@@ -162,3 +162,14 @@ class ReservationDetailView(LoginRequiredMixin, View):
             return render(request, 'rooms/reservation_detail.html', {'reservation': reservation[0]})
         else:
             return redirect(reverse('pages:not_found'))
+
+
+class RequestDenyView(AdminOrManagerAccessMixin, View):
+    def post(self, request, request_id):
+        room_request = Request.objects.filter(id=request_id, status=Request.Status.PENDING).first()
+        if room_request:
+            room_request.status = Request.Status.DENIED
+            room_request.save()
+            return redirect(reverse('rooms:request_list'))
+        else:
+            return redirect(reverse('pages:not_found'))
