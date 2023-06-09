@@ -136,8 +136,9 @@ class RequestApprovalForm(forms.ModelForm):
             )
             if overlap_requests.exists():
                 errors["force"] = [
-                    f'''User {overlap_request.user.username} also request for this time at
- {overlap_request.created_at.strftime("%Y-%m-%d %H:%M:%S")} with capacity {overlap_request.capacity}.'''
+                    f'''User {overlap_request.user.username}' request created at
+ {overlap_request.created_at.strftime("%Y-%m-%d %H:%M:%S")} with a capacity
+ {overlap_request.capacity} has overlap with this time.'''
                     for overlap_request in overlap_requests
                 ]
 
