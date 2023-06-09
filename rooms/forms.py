@@ -1,7 +1,7 @@
 from typing import Any, Dict
 from django import forms
 
-from rooms.models import Request, Room
+from rooms.models import Request, Room, Reservation
 
 
 class RoomForm(forms.ModelForm):
@@ -18,7 +18,7 @@ class RequestForm(forms.ModelForm):
 
     class Meta:
         model = Request
-        fields = ['duration', 'start_time', 'end_time', 'date']
+        fields = ['duration', 'start_time', 'end_time', 'date', 'capacity']
 
     def save(self, user, commit=True):
         room_request = super().save(commit=False)
