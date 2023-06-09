@@ -10,6 +10,25 @@ from users.models import User
 from users.mixins import AdminOrManagerAccessMixin
 
 
+def get_filtered_reservations(reservations, filter):
+    today = timezone.now()
+    start_week = today - timezone.timedelta(days=today.weekday())
+    end_week = start_week + timezone.timedelta(days=7)
+    queries = {
+        'all': reservations,
+        'today': reservations.filter(date=timezone.now()),
+        'this-week': reservations.filter(date__range=[start_week, end_week]),
+        'this-month': reservations.filter(date__month=today.month),
+        'last-7-days': reservations.filter(date__range=[today - timezone.timedelta(days=7), today]),
+        'next-7-days': reservations.filter(date__range=[today, today + timezone.timedelta(days=7)]),
+        'last-30-days': reservations.filter(date__range=[today - timezone.timedelta(days=30), today]),
+        'next-30-days': reservations.filter(date__range=[today, today + timezone.timedelta(days=30)]),
+    }
+    if filter in queries:
+        return queries[filter]
+    return queries['all']
+
+
 class RequestListView(LoginRequiredMixin, View):
     def get(self, request):
         if request.user.user_type == User.UserType.USER:
@@ -122,19 +141,12 @@ class RoomEditView(AdminOrManagerAccessMixin, View):
 class ReservationListView(AdminOrManagerAccessMixin, View):
     def get(self, request):
         reservations = Reservation.objects.all().order_by('-date')
-        today = timezone.now()
-        start_week = today - timezone.timedelta(days=today.weekday())
-        end_week = start_week + timezone.timedelta(days=7)
-        queries = {
-            'all': reservations,
-            'today': reservations.filter(date=timezone.now()),
-            'this-week': reservations.filter(date__range=[start_week, end_week]),
-            'this-month': reservations.filter(date__month=today.month),
-            'last-7-days': reservations.filter(date__range=[today - timezone.timedelta(days=7), today]),
-            'next-7-days': reservations.filter(date__range=[today, today + timezone.timedelta(days=7)]),
-            'last-30-days': reservations.filter(date__range=[today - timezone.timedelta(days=30), today]),
-            'next-30-days': reservations.filter(date__range=[today, today + timezone.timedelta(days=30)]),
-        }
-        if request.GET.get('filter') in queries:
-            reservations = queries[request.GET.get('filter')]
+        reservations = get_filtered_reservations(reservations, request.GET.get('filter'))
+        return render(request, 'rooms/reservation_list.html', {'reservations': reservations})
+
+
+class RoomReservationList(AdminOrManagerAccessMixin, View):
+    def get(self, request, room_id):
+        reservations = Reservation.objects.filter(room_id=room_id)
+        reservations = get_filtered_reservations(reservations, request.GET.get('filter'))
         return render(request, 'rooms/reservation_list.html', {'reservations': reservations})

@@ -31,7 +31,7 @@
                             {% if request.user.user_type != 'user' %}
                                 <td>
                                     <a href="{% url 'rooms:room_edit' room.id %}" class="btn btn-warning">Edit</a>
-                                    <a href="/" class="btn btn-primary">Reservations</a>
+                                    <a href="{% url 'rooms:room_reservation_list' room.id %}" class="btn btn-primary">Reservations</a>
                                     <form method="POST" action="{% url 'rooms:room_delete' room.id %}" style="display: inline;">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-danger">Delete</button>
