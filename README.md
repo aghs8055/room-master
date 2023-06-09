@@ -52,6 +52,7 @@ The Makefile provides the following commands for convenience:
 - make refresh-database: refreshes the project database
 - make lint: runs the linter for the application
 - make help: displays the available commands
+- make create-superuser: create a super user in database
 
 ## Contact
 
