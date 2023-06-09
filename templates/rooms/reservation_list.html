@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} | Reservations{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5 mb-5">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header custom-card-header-bg">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="card-title">Reservations</h4>
+                    <form method="get" action="{% url 'rooms:reservation_list' %}">
+                        <select class="form-control" name="filter" onclick="submit()">
+                            <option value="all" {% if request.GET.filter == 'all' or not request.GET.filter %}selected{% endif %}>All</option>
+                            <option value="today" {% if request.GET.filter == "today" %}selected{% endif %}>Today</option>
+                            <option value="this-week" {% if request.GET.filter == 'this-week' %}selected{% endif %}>This week</option>
+                            <option value="this-month" {% if request.GET.filter == 'this-month' %}selected{% endif %}>This month</option>
+                            <option value="last-7-days" {% if request.GET.filter == 'last-7-days' %}selected{% endif %}>Last 7 days</option>
+                            <option value="next-7-days" {% if request.GET.filter == 'next-7-days' %}selected{% endif %}>Next 7 days</option>
+                            <option value="last-30-days" {% if request.GET.filter == 'last-30-days' %}selected{% endif %}>Last 30 days</option>
+                            <option value="next-30-days" {% if request.GET.filter == 'next-30-days' %}selected{% endif %}>Next 30 days</option>
+                        </select>
+                    </form>
+                </div>              
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Room Code</th>
+                            <th>Date</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reservation in reservations %}
+                        <tr>
+                            <td>{{ reservation.user.username }}</td>
+                            <td>{{ reservation.room.code }}</td>
+                            <td>{{ reservation.date }}</td>
+                            <td>{{ reservation.start_time }}</td>
+                            <td>{{ reservation.end_time }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
