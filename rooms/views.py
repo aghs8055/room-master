@@ -66,14 +66,10 @@ class RequestCreateView(LoginRequiredMixin, View):
         return render(request, "rooms/request_form.html", {"errors": dict(form.errors)})
 
 
-class RequestDeleteView(AdminOrManagerAccessMixin, View):
+class RequestDeleteView(LoginRequiredMixin, View):
     def post(self, request, request_id):
-        room_request = Request.objects.filter(id=request_id, user=request.user)
-        if room_request:
-            room_request.delete()
-            return redirect(reverse("rooms:request_list"))
-        else:
-            return redirect(reverse("pages:not_found"))
+        Request.objects.filter(id=request_id, user=request.user, status=Request.Status.PENDING).delete()
+        return redirect(reverse("rooms:request_list"))
 
 
 class RequestEditView(LoginRequiredMixin, View):
@@ -124,12 +120,8 @@ class RoomCreateView(AdminOrManagerAccessMixin, View):
 
 class RoomDeleteView(AdminOrManagerAccessMixin, View):
     def post(self, request, room_id):
-        room = Room.objects.filter(id=room_id)
-        if room:
-            room.delete()
-            return redirect(reverse("rooms:room_list"))
-        else:
-            return redirect(reverse("pages:not_found"))
+        room = Room.objects.filter(id=room_id).delete()
+        return redirect(reverse("rooms:room_list"))
 
 
 class RoomEditView(AdminOrManagerAccessMixin, View):
