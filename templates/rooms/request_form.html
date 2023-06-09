@@ -55,6 +55,12 @@ Create Request
                                            id="id_end_time" value="{{ room_request.end_tiem }}">
                                     <span class="invalid-feedback">{{ errors.end_time }}</span>
                                 </div>
+                                <div class="mb-4">
+                                    <label for="id_capacity">Capacity</label>
+                                    <input type="number" name="capacity" class="form-control mt-2 {% if errors.capacity %}is-invalid{% endif %}"
+                                           id="id_capacity" value="{{ room_request.capacity }}">
+                                    <span class="invalid-feedback">{{ errors.capacity }}</span>
+                                </div>
                                 <div class="d-grid gap-2">
                                     {% if room_request %}
                                     <button type="submit" class="btn btn-primary btn-lg">Edit</button>
