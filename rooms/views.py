@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 
 from rooms.models import Request, Room, Reservation
-from rooms.forms import RequestForm, RoomForm
+from rooms.forms import RequestForm, RoomForm, RequestApprovalForm
 from users.models import User
 from users.mixins import AdminOrManagerAccessMixin
 
@@ -173,3 +173,28 @@ class RequestDenyView(AdminOrManagerAccessMixin, View):
             return redirect(reverse('rooms:request_list'))
         else:
             return redirect(reverse('pages:not_found'))
+
+
+class RequestApproveView(AdminOrManagerAccessMixin, View):
+    def get(self, request, request_id):
+        room_request = self.get_object(request_id)
+        rooms = Room.objects.all()
+        if room_request:
+            return render(request, 'rooms/request_approval_form.html', {'room_request': room_request, 'rooms': rooms})
+        else:
+            return redirect(reverse('pages:not_found'))
+
+    def post(self, request, request_id):
+        room_request = self.get_object(request_id)
+        rooms = Room.objects.all()
+        if not room_request:
+            return redirect(reverse('pages:not_found'))
+        form = RequestApprovalForm(request.POST)
+        if form.is_valid():
+            form.save(request.user)
+            return redirect(reverse('rooms:request_list'))
+        print(dict(form.errors))
+        return render(request, 'rooms/request_approval_form.html', {'data': request.POST.dict(), 'errors': dict(form.errors), 'room_request': room_request, 'rooms': rooms})
+
+    def get_object(self, request_id):
+        return Request.objects.filter(id=request_id, status=Request.Status.PENDING).first()
