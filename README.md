@@ -30,7 +30,7 @@ Room Master is a project that allows managers to efficiently manage rooms and th
 
 1. Clone the repository:
 ```
-git clone https://gitlab.com/aghs8055/ticketer.git
+git clone https://github.com/aghs8055/room-master.git
 ```
 
 2. Install the necessary Python libraries:
