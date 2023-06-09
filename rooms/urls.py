@@ -11,6 +11,7 @@ from rooms.views import (
     RoomEditView,
     ReservationListView,
     RoomReservationList,
+    ReservationDetailView,
 )
 
 app_name = 'rooms'
@@ -26,4 +27,5 @@ urlpatterns = [
     path('<int:room_id>/edit/', RoomEditView.as_view(), name='room_edit'),
     path('reservations/', ReservationListView.as_view(), name='reservation_list'),
     path('<int:room_id>/reservations/', RoomReservationList.as_view(), name='room_reservation_list'),
+    path('reservations/<int:reservation_id>/', ReservationDetailView.as_view(), name='reservation_detail'),
 ]

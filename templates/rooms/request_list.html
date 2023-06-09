@@ -35,7 +35,7 @@
                             <td>{{ room_request.start_time|default:'-' }}</td>
                             <td>{{ room_request.end_time|default:'-' }}</td>
                             <td>
-                                {% if room_request.reservation %}<a href="#" class="btn btn-primary">Reservation Detail</a>{% endif %}
+                                {% if room_request.reservation %}<a href="{% url 'rooms:reservation_detail' room_request.reservation.id %}" class="btn btn-primary">Reservation Detail</a>{% endif %}
                                 {% if request.user == room_request.user %}
                                     <a href="{% url 'rooms:request_edit' room_request.id %}" class="btn btn-warning">Edit</a>
                                     <form method="POST" action="{% url 'rooms:request_delete' room_request.id %}" style="display: inline;">

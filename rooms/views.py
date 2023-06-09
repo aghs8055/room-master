@@ -150,3 +150,15 @@ class RoomReservationList(AdminOrManagerAccessMixin, View):
         reservations = Reservation.objects.filter(room_id=room_id)
         reservations = get_filtered_reservations(reservations, request.GET.get('filter'))
         return render(request, 'rooms/reservation_list.html', {'reservations': reservations})
+
+
+class ReservationDetailView(LoginRequiredMixin, View):
+    def get(self, request, reservation_id):
+        if request.user.user_type == User.UserType.USER:
+            reservation = Reservation.objects.filter(id=reservation_id, user=request.user)
+        else:
+            reservation = Reservation.objects.filter(id=reservation_id)
+        if reservation:
+            return render(request, 'rooms/reservation_detail.html', {'reservation': reservation[0]})
+        else:
+            return redirect(reverse('pages:not_found'))
