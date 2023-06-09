@@ -4,13 +4,13 @@ from django.urls import reverse
 from users.models import User
 
 
-class AdminOrManagerAccessMixin:
+class ManagerAccessMixin:
     redirect_url = 'pages:not_found'
     login_url = 'users:login'
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            if request.user.user_type in [User.UserType.ADMIN, User.UserType.MANAGER]:
+            if request.user.user_type == User.UserType.MANAGER:
                 return super().dispatch(request, *args, **kwargs)
             else:
                 return redirect(reverse(self.redirect_url))

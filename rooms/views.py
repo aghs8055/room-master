@@ -7,7 +7,7 @@ from django.utils import timezone
 from rooms.models import Request, Room, Reservation
 from rooms.forms import RequestForm, RoomForm, RequestApprovalForm
 from users.models import User
-from users.mixins import AdminOrManagerAccessMixin
+from users.mixins import ManagerAccessMixin
 
 
 def get_filtered_reservations(reservations, filter):
@@ -106,7 +106,7 @@ class RoomListView(LoginRequiredMixin, View):
         return render(request, "rooms/room_list.html", {"rooms": rooms})
 
 
-class RoomCreateView(AdminOrManagerAccessMixin, View):
+class RoomCreateView(ManagerAccessMixin, View):
     def get(self, request):
         return render(request, "rooms/room_form.html")
 
@@ -118,13 +118,13 @@ class RoomCreateView(AdminOrManagerAccessMixin, View):
         return render(request, "rooms/room_form.html", {"errors": dict(form.errors)})
 
 
-class RoomDeleteView(AdminOrManagerAccessMixin, View):
+class RoomDeleteView(ManagerAccessMixin, View):
     def post(self, request, room_id):
         room = Room.objects.filter(id=room_id).delete()
         return redirect(reverse("rooms:room_list"))
 
 
-class RoomEditView(AdminOrManagerAccessMixin, View):
+class RoomEditView(ManagerAccessMixin, View):
     def get(self, request, room_id):
         room = Room.objects.filter(id=room_id)
         if room:
@@ -146,7 +146,7 @@ class RoomEditView(AdminOrManagerAccessMixin, View):
             return redirect(reverse("pages:not_found"))
 
 
-class ReservationListView(AdminOrManagerAccessMixin, View):
+class ReservationListView(ManagerAccessMixin, View):
     def get(self, request):
         reservations = Reservation.objects.all().order_by("-date")
         reservations = get_filtered_reservations(
@@ -157,7 +157,7 @@ class ReservationListView(AdminOrManagerAccessMixin, View):
         )
 
 
-class RoomReservationList(AdminOrManagerAccessMixin, View):
+class RoomReservationList(ManagerAccessMixin, View):
     def get(self, request, room_id):
         reservations = Reservation.objects.filter(room_id=room_id)
         reservations = get_filtered_reservations(
@@ -186,7 +186,7 @@ class ReservationDetailView(LoginRequiredMixin, View):
             return redirect(reverse("pages:not_found"))
 
 
-class RequestDenyView(AdminOrManagerAccessMixin, View):
+class RequestDenyView(ManagerAccessMixin, View):
     def post(self, request, request_id):
         room_request = Request.objects.filter(
             id=request_id, status=Request.Status.PENDING
@@ -199,7 +199,7 @@ class RequestDenyView(AdminOrManagerAccessMixin, View):
             return redirect(reverse("pages:not_found"))
 
 
-class RequestApproveView(AdminOrManagerAccessMixin, View):
+class RequestApproveView(ManagerAccessMixin, View):
     def get(self, request, request_id):
         room_request = self.get_object(request_id)
         rooms = Room.objects.all()
