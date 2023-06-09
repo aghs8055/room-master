@@ -48,10 +48,7 @@
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-outline-danger">Deny</button>
                                 </form>
-                                <form method="POST" action="#" style="display: inline;">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-outline-success">Approve</button>
-                                </form>
+                                <a href="{% url 'rooms:request_approve' room_request.id %}" class="btn btn-outline-success">Approve</a>
                                 {% endif %}
                             </td>
                         </tr>
