@@ -12,6 +12,7 @@ from rooms.views import (
     ReservationListView,
     RoomReservationList,
     ReservationDetailView,
+    RequestDenyView,
 )
 
 app_name = 'rooms'
@@ -28,4 +29,5 @@ urlpatterns = [
     path('reservations/', ReservationListView.as_view(), name='reservation_list'),
     path('<int:room_id>/reservations/', RoomReservationList.as_view(), name='room_reservation_list'),
     path('reservations/<int:reservation_id>/', ReservationDetailView.as_view(), name='reservation_detail'),
+    path('requests/<int:request_id>/deny/', RequestDenyView.as_view(), name='request_deny')
 ]
