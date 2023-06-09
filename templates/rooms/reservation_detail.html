@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} | Reservation{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="container mb-3">
+            <div class="row justify-content-center">
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header">Reservation Detail</div>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Username</th>
+                                    <td>{{ reservation.user.username }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Room</th>
+                                    <td>{{ reservation.room.code }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Date</th>
+                                    <td>{{ reservation.date }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Start Time</th>
+                                    <td>{{ reservation.start_time }}</td>
+                                </tr>
+                                <tr>
+                                    <th>End Time</th>
+                                    <td>{{ reservation.end_time }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
