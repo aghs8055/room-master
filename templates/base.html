@@ -38,7 +38,7 @@
                 </li>
                 {% if request.user.user_type != 'user' %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{% url 'rooms:reservation_list' %}">
                         Reservations
                     </a>
                 </li>

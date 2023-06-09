@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils import timezone
 
-from rooms.models import Request, Room
+from rooms.models import Request, Room, Reservation
 from rooms.forms import RequestForm, RoomForm
 from users.models import User
 from users.mixins import AdminOrManagerAccessMixin
@@ -116,3 +117,24 @@ class RoomEditView(AdminOrManagerAccessMixin, View):
             return render(request, 'rooms/room_form.html', {'errors': dict(form.errors)})
         else:
             return redirect(reverse('pages:not_found'))
+
+
+class ReservationListView(AdminOrManagerAccessMixin, View):
+    def get(self, request):
+        reservations = Reservation.objects.all().order_by('-date')
+        today = timezone.now()
+        start_week = today - timezone.timedelta(days=today.weekday())
+        end_week = start_week + timezone.timedelta(days=7)
+        queries = {
+            'all': reservations,
+            'today': reservations.filter(date=timezone.now()),
+            'this-week': reservations.filter(date__range=[start_week, end_week]),
+            'this-month': reservations.filter(date__month=today.month),
+            'last-7-days': reservations.filter(date__range=[today - timezone.timedelta(days=7), today]),
+            'next-7-days': reservations.filter(date__range=[today, today + timezone.timedelta(days=7)]),
+            'last-30-days': reservations.filter(date__range=[today - timezone.timedelta(days=30), today]),
+            'next-30-days': reservations.filter(date__range=[today, today + timezone.timedelta(days=30)]),
+        }
+        if request.GET.get('filter') in queries:
+            reservations = queries[request.GET.get('filter')]
+        return render(request, 'rooms/reservation_list.html', {'reservations': reservations})
